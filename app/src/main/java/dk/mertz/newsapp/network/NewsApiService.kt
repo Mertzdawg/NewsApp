@@ -1,4 +1,12 @@
 package dk.mertz.newsapp.network
 
-const val BASE_URL = "https://newsapi.org/v2/"
-const val API_KEY = "1aedaa8a8a0643ab8b28330f364a2986"
+import dk.mertz.newsapp.model.NewsList
+import io.reactivex.Observable
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface  NewsApiService {
+    @GET("everything?domains=wsj.com,nytimes.com&apiKey=$API_KEY")
+    fun getNews(@Query("q") query: String) : Observable<NewsList>
+
+}
