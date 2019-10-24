@@ -1,7 +1,11 @@
 package dk.mertz.newsapp.view_model
 
+
 import android.util.Log
+
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dk.mertz.newsapp.model.Article
 import dk.mertz.newsapp.model.NewsList
 import dk.mertz.newsapp.network.BASE_URL
 import dk.mertz.newsapp.network.NewsApiService
@@ -13,11 +17,10 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 
-
 class NewsListVM : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-    private var articles: NewsList? = null
+    private val articles = MutableLiveData<List<Article>>()
 
     init {
         loadData()
@@ -31,7 +34,7 @@ class NewsListVM : ViewModel() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build().create(NewsApiService::class.java)
 
-        compositeDisposable.add(requestInterface.getNews("")
+        compositeDisposable.add(requestInterface.getNews("Star Wars")
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(this::handleResponse))
@@ -40,8 +43,8 @@ class NewsListVM : ViewModel() {
 
     private fun handleResponse(newsList : NewsList) {
         Log.d("RESPONSE",newsList.toString())
-
-        articles = newsList
+        Log.d("ArticleCount", newsList.articles?.size.toString())
+        articles.postValue(newsList.articles)
 
     }
 
