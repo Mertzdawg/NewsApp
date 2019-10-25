@@ -2,6 +2,7 @@ package dk.mertz.newsapp.view
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dk.mertz.newsapp.model.Article
@@ -29,15 +30,13 @@ class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val article = articles[position]
         (holder as RecyclerHolder).bind(article, listener)
-
     }
 
 
     interface OnArticleClickListener {
-        fun onArticleClick(position: Int)
+        fun onArticleClick(article: Article)
     }
 
 
@@ -46,6 +45,9 @@ class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.A
         fun bind(article: Article, listener: OnArticleClickListener?) {
             applicationBinding.articleTitle.text  = article.title
             applicationBinding.articleAuthor.text = article.author
+            applicationBinding.root.setOnClickListener {
+                listener?.onArticleClick(article)
+            }
 
         }
 

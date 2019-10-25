@@ -1,11 +1,14 @@
 package dk.mertz.newsapp.view
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bluelinelabs.conductor.RouterTransaction
 import dk.mertz.newsapp.R
 import dk.mertz.newsapp.model.Article
 import dk.mertz.newsapp.view_model.NewsListVM
@@ -20,6 +23,7 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
 
         val adapter = setRecyclerView(view)
 
+
         subscribeDataCallback(vm, adapter)
 
         return view
@@ -28,13 +32,13 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
     private fun setRecyclerView(view: View): NewsAdapter {
         val adapter = NewsAdapter(this)
 
-        val dataList: ArrayList<Article> = ArrayList()
+        var articleList = ArrayList<Article>()
 
         val newsLinearLayoutManager = LinearLayoutManager(view.context)
         newsLinearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         view.recyclerView.layoutManager = newsLinearLayoutManager
 
-        adapter.setArticleList(dataList)
+        adapter.setArticleList(articleList)
         view.recyclerView.adapter = adapter
         return adapter
     }
@@ -53,8 +57,10 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
     }
 
 
-    override fun onArticleClick(position: Int) {
-
+    override fun onArticleClick(article: Article) {
+        Log.d("onArticleClick","click")
+        val bundle = bundleOf(Pair("URL", article.url))
+        router.pushController(RouterTransaction.with(WebViewController(bundle)))
     }
 
 }
