@@ -11,7 +11,7 @@ import dk.mertz.newsapp.view.NewsListController
 class MainActivity : AppCompatActivity() {
 
     private val container by lazy { findViewById<ViewGroup>(R.id.controller_container) }
-    lateinit private var router: Router
+    private lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

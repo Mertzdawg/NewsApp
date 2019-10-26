@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface  NewsApiService {
-    @GET("everything?domains=wsj.com,nytimes.com&apiKey=$API_KEY")
+    @GET("everything?sortBy=popularity&apiKey=$API_KEY")
     fun getNews(@Query("q") query: String) : Observable<NewsList>
 
 }

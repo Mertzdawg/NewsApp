@@ -6,21 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dk.mertz.newsapp.R
 import dk.mertz.newsapp.model.Article
-
 import dk.mertz.newsapp.databinding.ListItemArticleBinding
 
 class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val articles = ArrayList<Article>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val applicationBinding = ListItemArticleBinding.inflate(layoutInflater, parent, false)
         return RecyclerHolder(applicationBinding)
     }
-    private val articles = ArrayList<Article>()
 
     fun setArticleList(articleList: ArrayList<Article>) {
         articles.addAll(articleList)
-        notifyItemRangeInserted(0, articleList.size)
         notifyDataSetChanged()
     }
 
@@ -39,13 +37,13 @@ class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.A
     }
 
 
-    inner class RecyclerHolder(private var applicationBinding: ListItemArticleBinding) : RecyclerView.ViewHolder(applicationBinding.root) {
+    inner class RecyclerHolder(private var articleBinding: ListItemArticleBinding) : RecyclerView.ViewHolder(articleBinding.root) {
 
         fun bind(article: Article, listener: OnArticleClickListener?) {
-            applicationBinding.articleTitle.text  = article.title
-            applicationBinding.articleDescription.text = article.description
+            articleBinding.articleTitle.text  = article.title
+            articleBinding.articleDescription.text = article.description
             //opens WebView of article
-            applicationBinding.root.setOnClickListener {
+            articleBinding.root.setOnClickListener {
                 listener?.onArticleClick(article)
             }
             //Article Image
@@ -54,7 +52,7 @@ class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.A
                 .load(article.urlToImage)
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_foreground)
-                .into(applicationBinding.articleImage)
+                .into(articleBinding.articleImage)
         }
 
 
