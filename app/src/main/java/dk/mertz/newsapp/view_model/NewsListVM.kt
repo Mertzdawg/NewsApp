@@ -34,7 +34,7 @@ class NewsListVM : ViewModel() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build().create(NewsApiService::class.java)
 
-        compositeDisposable.add(requestInterface.getNews("Star Wars")
+        compositeDisposable.add(requestInterface.getNews("")
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(this::handleResponse))
@@ -42,8 +42,7 @@ class NewsListVM : ViewModel() {
     }
 
     private fun handleResponse(newsList : NewsList) {
-        Log.d("RESPONSE",newsList.toString())
-        Log.d("ArticleCount", newsList.articles?.size.toString())
+        Log.d("JSON",newsList.toString())
         articles.postValue(newsList.articles)
 
     }

@@ -18,7 +18,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(NewsListController()))
+            router.setRoot(RouterTransaction
+                .with(NewsListController())
+            )
         }
     }
 

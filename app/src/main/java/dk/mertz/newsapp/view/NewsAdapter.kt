@@ -1,10 +1,10 @@
 package dk.mertz.newsapp.view
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import dk.mertz.newsapp.R
 import dk.mertz.newsapp.model.Article
 
 import dk.mertz.newsapp.databinding.ListItemArticleBinding
@@ -25,7 +25,6 @@ class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.A
     }
 
     override fun getItemCount(): Int {
-        Log.d("LIST_SIZE","" + articles.size)
         return articles.size
     }
 
@@ -44,13 +43,22 @@ class NewsAdapter(private var listener: OnArticleClickListener) : RecyclerView.A
 
         fun bind(article: Article, listener: OnArticleClickListener?) {
             applicationBinding.articleTitle.text  = article.title
-            applicationBinding.articleAuthor.text = article.author
+            applicationBinding.articleDescription.text = article.description
+            //opens WebView of article
             applicationBinding.root.setOnClickListener {
                 listener?.onArticleClick(article)
             }
-
+            //Article Image
+            Glide
+                .with(itemView)
+                .load(article.urlToImage)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(applicationBinding.articleImage)
         }
 
 
     }
+
+
 }
