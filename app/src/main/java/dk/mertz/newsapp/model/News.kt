@@ -8,4 +8,4 @@ data class Article(val source: Source?, val author:String? = null, val title:Str
                    val urlToImage: String? = null, val publishedAt:String? = null,
                    val content: String? = null)
 
-data class Source(val id: Any? = null,val name:String? = null )
+data class Source(val id: String? = null,val name:String? = null )

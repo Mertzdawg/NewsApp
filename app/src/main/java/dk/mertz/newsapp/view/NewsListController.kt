@@ -28,9 +28,6 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
 
     private fun setRecyclerView(view: View): NewsAdapter {
         val adapter = NewsAdapter(this)
-        val articleList = ArrayList<Article>()
-
-        adapter.setArticleList(articleList)
         view.recyclerView.adapter = adapter
         return adapter
     }
