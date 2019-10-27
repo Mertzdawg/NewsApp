@@ -14,6 +14,7 @@ class WebViewController(bundle:Bundle) : Controller(bundle) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.controller_webview,container,false)
+        setOptionsMenuHidden(true)
         //should only be enabled for trusted domains to avoid XSS attacks
         view.webView.settings.javaScriptEnabled = true
         view.webView.loadUrl(param)

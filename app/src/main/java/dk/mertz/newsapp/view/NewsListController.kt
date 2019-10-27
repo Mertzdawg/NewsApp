@@ -1,9 +1,8 @@
 package dk.mertz.newsapp.view
 
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.bluelinelabs.conductor.RouterTransaction
@@ -19,7 +18,9 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.controller_newslist,container,false)
         val vm =  viewModelProvider().get(NewsListVM::class.java)
+
         val adapter = setRecyclerView(view)
+        setHasOptionsMenu(true)
 
         subscribeNewsCallback(vm, adapter)
 
@@ -28,9 +29,6 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
 
     private fun setRecyclerView(view: View): NewsAdapter {
         val adapter = NewsAdapter(this)
-        val articleList = ArrayList<Article>()
-
-        adapter.setArticleList(articleList)
         view.recyclerView.adapter = adapter
         return adapter
     }
@@ -38,7 +36,7 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
     private fun subscribeNewsCallback(vm: NewsListVM, adapter: NewsAdapter) {
         vm.getArticles().observe(this, Observer<List<Article>> {
             if (it != null) {
-                adapter.setArticleList(ArrayList(it))
+                adapter.setArticleList(it as ArrayList<Article>)
                 view!!.progressBar?.visibility = View.INVISIBLE
             }
         })
@@ -53,6 +51,31 @@ class NewsListController : ViewModelController(), NewsAdapter.OnArticleClickList
             .pushChangeHandler(FadeChangeHandler())
             .popChangeHandler(FadeChangeHandler())
         )
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu,menu)
+        val searchItem = menu.findItem(R.id.search_articles)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val vm =  viewModelProvider().get(NewsListVM::class.java)
+                if (query != null) {
+                    vm.refreshQuery(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+
+        })
+
+
     }
 
 }

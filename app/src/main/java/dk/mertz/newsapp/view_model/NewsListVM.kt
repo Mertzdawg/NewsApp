@@ -23,18 +23,17 @@ class NewsListVM : ViewModel() {
     private var loading = true
 
     init {
-        loadNews()
+        loadNews("Android")
     }
 
-    private fun loadNews() {
-
+    private fun loadNews(query : String) {
         val requestInterface = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build().create(NewsApiService::class.java)
         //collect RxJava disposables
-        compositeDisposable.add(requestInterface.getNews("Android")
+        compositeDisposable.add(requestInterface.getNews(query)
         //send observable notification to UI thread
             .observeOn(AndroidSchedulers.mainThread())
         //subscribe to observer away from UI thread
@@ -49,6 +48,10 @@ class NewsListVM : ViewModel() {
     }
 
     fun getArticles() = articles
+
+    fun refreshQuery(query: String) {
+        loadNews(query)
+    }
 
     override fun onCleared() {
         super.onCleared()
