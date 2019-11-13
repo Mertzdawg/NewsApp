@@ -10,5 +10,5 @@ Moreover, the project should make use of the following concepts / libraries:
 * Use of Conductor
 * Glide for image handling
 
-For bonus points, the project can make use of the following (this isn’t required, but it refers to technologies we use at Adapt):
+For bonus points, the project can make use of the following:
 * RxJava
